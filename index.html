@@ -248,6 +248,7 @@ tbody td { padding:11px 14px; vertical-align:middle; }
     <button class="nav-item" onclick="showSection('campaigns',this)"><span class="nav-icon">🎯</span> Campaigns</button>
     <button class="nav-item" onclick="showSection('targets',this)"><span class="nav-icon">📈</span> ROAS Targets</button>
     <button class="nav-item" onclick="showSection('checklist',this)"><span class="nav-icon">✅</span> Action Checklist</button>
+    <button class="nav-item" onclick="showSection('reference',this)"><span class="nav-icon">📖</span> ROAS Reference</button>
   </div>
   <div class="nav-section">
     <div class="nav-label">Data</div>
@@ -379,6 +380,177 @@ tbody td { padding:11px 14px; vertical-align:middle; }
     <div class="card animate" id="checklistCard"></div>
   </div>
 
+  <!-- REFERENCE -->
+  <div id="section-reference" class="page-section">
+
+    <div class="insight-box animate" style="margin-bottom:20px">
+      <div class="insight-icon">📖</div>
+      <div class="insight-text">
+        <h4>ROAS guardrail reference — your business, your margins</h4>
+        <p>Static reference based on your actual contribution margins. No data needed. Use this as a quick sanity check when reviewing Google Ads or briefing anyone on the account.</p>
+      </div>
+    </div>
+
+    <div class="two-col" style="margin-bottom:20px">
+
+      <!-- OWN BRAND -->
+      <div class="card animate"><div class="card-inner">
+        <div class="section-header" style="margin-bottom:16px">
+          <div>
+            <div class="section-title">Own Brand PMax</div>
+            <div class="section-sub">60% gross margin · ~$792 AOV · $475 contribution/sale</div>
+          </div>
+          <span class="badge badge-pmax">PMax</span>
+        </div>
+        <table class="benchmark-table">
+          <thead><tr><th>ROAS</th><th>Status</th><th>What it means</th><th>Contribution per $1 spent</th></tr></thead>
+          <tbody>
+            <tr style="background:var(--red-light)">
+              <td class="mono val-red">Below 1.67×</td>
+              <td><span class="action-badge action-fix">🚨 Losing money</span></td>
+              <td style="font-size:11px">Ad spend exceeds gross profit. Every sale costs you money.</td>
+              <td class="mono val-red">Negative</td>
+            </tr>
+            <tr>
+              <td class="mono val-amber">1.67× – 2.0×</td>
+              <td><span class="action-badge action-hold">⚠ Marginal</span></td>
+              <td style="font-size:11px">Technically profitable but very thin. Covers product cost barely.</td>
+              <td class="mono val-amber">$0 – $0.20</td>
+            </tr>
+            <tr>
+              <td class="mono val-amber">2.0× – 3.0×</td>
+              <td><span class="action-badge action-hold">~ Acceptable</span></td>
+              <td style="font-size:11px">Decent contribution. Below recommended target but not alarming.</td>
+              <td class="mono val-amber">$0.20 – $0.80</td>
+            </tr>
+            <tr style="background:var(--green-light)">
+              <td class="mono val-green">3.0× – 5.0×</td>
+              <td><span class="action-badge action-up">✓ Healthy</span></td>
+              <td style="font-size:11px">Good margin. Recommended operating range for this campaign.</td>
+              <td class="mono val-green">$0.80 – $2.00</td>
+            </tr>
+            <tr style="background:#f0fdf4">
+              <td class="mono" style="color:var(--purple);font-weight:700">5.0×+</td>
+              <td><span class="action-badge action-great">💪 Excellent</span></td>
+              <td style="font-size:11px">Strongly profitable. Consider lowering target to capture more volume.</td>
+              <td class="mono" style="color:var(--purple);font-weight:700">$2.00+</td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top:14px;padding:12px 14px;background:var(--bg);border-radius:8px;font-size:11px;color:var(--muted);line-height:1.6">
+          <strong style="color:var(--text)">Contribution per $1 spent formula:</strong> (ROAS × margin) − 1<br>
+          Example at 3.78×: (3.78 × 0.60) − 1 = <strong style="color:var(--green)">$1.27 contribution per $1 ad spend</strong>
+        </div>
+      </div></div>
+
+      <!-- CORE CATEGORIES + SECONDARY -->
+      <div class="card animate"><div class="card-inner">
+        <div class="section-header" style="margin-bottom:16px">
+          <div>
+            <div class="section-title">Core & Secondary Categories PMax</div>
+            <div class="section-sub">35% gross margin · ~$456–588 AOV · $160–206 contribution/sale</div>
+          </div>
+          <span class="badge badge-pmax">PMax</span>
+        </div>
+        <table class="benchmark-table">
+          <thead><tr><th>ROAS</th><th>Status</th><th>What it means</th><th>Contribution per $1 spent</th></tr></thead>
+          <tbody>
+            <tr style="background:var(--red-light)">
+              <td class="mono val-red">Below 2.86×</td>
+              <td><span class="action-badge action-fix">🚨 Losing money</span></td>
+              <td style="font-size:11px">Ad spend exceeds gross profit. Every sale costs you money.</td>
+              <td class="mono val-red">Negative</td>
+            </tr>
+            <tr>
+              <td class="mono val-amber">2.86× – 3.5×</td>
+              <td><span class="action-badge action-hold">⚠ Marginal</span></td>
+              <td style="font-size:11px">Technically profitable but thin margin. Watch closely.</td>
+              <td class="mono val-amber">$0 – $0.23</td>
+            </tr>
+            <tr>
+              <td class="mono val-amber">3.5× – 5.15×</td>
+              <td><span class="action-badge action-hold">~ Acceptable</span></td>
+              <td style="font-size:11px">Reasonable. Below healthy threshold but generating real contribution.</td>
+              <td class="mono val-amber">$0.23 – $0.80</td>
+            </tr>
+            <tr style="background:var(--green-light)">
+              <td class="mono val-green">5.15× – 8.58×</td>
+              <td><span class="action-badge action-up">✓ Healthy</span></td>
+              <td style="font-size:11px">Good margin. Recommended operating range for these campaigns.</td>
+              <td class="mono val-green">$0.80 – $2.00</td>
+            </tr>
+            <tr style="background:#f0fdf4">
+              <td class="mono" style="color:var(--purple);font-weight:700">8.58×+</td>
+              <td><span class="action-badge action-great">💪 Excellent</span></td>
+              <td style="font-size:11px">Strongly profitable. Consider lowering target to capture more volume.</td>
+              <td class="mono" style="color:var(--purple);font-weight:700">$2.00+</td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top:14px;padding:12px 14px;background:var(--bg);border-radius:8px;font-size:11px;color:var(--muted);line-height:1.6">
+          <strong style="color:var(--text)">Contribution per $1 spent formula:</strong> (ROAS × margin) − 1<br>
+          Example at 4.94×: (4.94 × 0.35) − 1 = <strong style="color:var(--green)">$0.73 contribution per $1 ad spend</strong>
+        </div>
+      </div></div>
+
+    </div>
+
+    <!-- SEARCH CAMPAIGNS -->
+    <div class="card animate" style="margin-bottom:20px"><div class="card-inner">
+      <div class="section-header" style="margin-bottom:16px">
+        <div>
+          <div class="section-title">Search Campaigns — Brand & Non-Brand</div>
+          <div class="section-sub">No margin config (blended product mix) · use these as directional guides only</div>
+        </div>
+        <span class="badge badge-search">Search</span>
+      </div>
+      <table class="benchmark-table">
+        <thead><tr><th>Campaign</th><th>ROAS to worry</th><th>ROAS acceptable</th><th>ROAS healthy</th><th>ROAS excellent</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="c-name">Brand Search<small>Protection</small></td>
+            <td class="mono val-red">Below 3×</td>
+            <td class="mono val-amber">3× – 5×</td>
+            <td class="mono val-green">5× – 8×</td>
+            <td class="mono" style="color:var(--purple);font-weight:700">8×+</td>
+            <td style="font-size:11px;color:var(--muted)">Primary goal is protecting brand terms from competitors. ROAS tends to be naturally high here. Monitor impression share ≥ 80%.</td>
+          </tr>
+          <tr>
+            <td class="c-name">Non-Brand Generic<small>Fix first</small></td>
+            <td class="mono val-red">Below 3×</td>
+            <td class="mono val-amber">3× – 5×</td>
+            <td class="mono val-green">5× – 7×</td>
+            <td class="mono" style="color:var(--purple);font-weight:700">7×+</td>
+            <td style="font-size:11px;color:var(--muted)">Currently at 0.88× — unprofitable. Needs keyword, bid and landing page fixes before budget should increase.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div></div>
+
+    <!-- QUICK FORMULA CARD -->
+    <div class="card animate"><div class="card-inner">
+      <div class="section-title" style="margin-bottom:16px">🧮 Quick Reference Formulas</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+        <div style="padding:16px;background:var(--bg);border-radius:8px">
+          <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:8px">Break-even ROAS</div>
+          <div class="mono" style="font-size:16px;font-weight:700;margin-bottom:6px">1 ÷ margin</div>
+          <div style="font-size:11px;color:var(--muted)">60% margin → 1.67×<br>35% margin → 2.86×</div>
+        </div>
+        <div style="padding:16px;background:var(--bg);border-radius:8px">
+          <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:8px">Contribution per $1 spent</div>
+          <div class="mono" style="font-size:16px;font-weight:700;margin-bottom:6px">(ROAS × margin) − 1</div>
+          <div style="font-size:11px;color:var(--muted)">How much profit each ad dollar generates after covering product cost</div>
+        </div>
+        <div style="padding:16px;background:var(--bg);border-radius:8px">
+          <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:8px">Healthy target ROAS</div>
+          <div class="mono" style="font-size:16px;font-weight:700;margin-bottom:6px">break-even × 1.8</div>
+          <div style="font-size:11px;color:var(--muted)">60% margin → 3.0×<br>35% margin → 5.15×</div>
+        </div>
+      </div>
+    </div></div>
+
+  </div>
+
 </main>
 </div>
 
@@ -494,9 +666,9 @@ function showSection(name, btn) {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('section-'+name).classList.add('active');
   btn.classList.add('active');
-  const titles = { overview:'Overview', campaigns:'All Campaigns', targets:'ROAS Targets', checklist:'Action Checklist' };
+  const titles = { overview:'Overview', campaigns:'All Campaigns', targets:'ROAS Targets', checklist:'Action Checklist', reference:'ROAS Reference' };
   const dateLabel = document.getElementById('dateRange').options[document.getElementById('dateRange').selectedIndex].text;
-  const subs = { overview:`Performance summary · ${dateLabel}`, campaigns:`Detailed campaign metrics · ${dateLabel}`, targets:'Scoreboard, contribution analysis & budget plan', checklist:'Dynamic tasks based on live performance' };
+  const subs = { overview:`Performance summary · ${dateLabel}`, campaigns:`Detailed campaign metrics · ${dateLabel}`, targets:'Scoreboard, contribution analysis & budget plan', checklist:'Dynamic tasks based on live performance', reference:'Static guardrail table · your margins · no data needed' };
   document.getElementById('pageTitle').textContent = titles[name];
   document.getElementById('pageSubtitle').textContent = subs[name];
   if (name === 'checklist' && campaignData.length) renderChecklist();
