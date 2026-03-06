@@ -391,7 +391,7 @@ const CAMPAIGN_CONFIG = {
   'PMax | ZEST | Own Brand | Scale & Margin':           { margin:.60, breakeven:1.67, recTarget:3.0, gadsTarget:4.0, action:'increase', newBudget:435 },
   'PMax | NON-ZEST | Core Categories | Revenue Engine': { margin:.35, breakeven:2.86, recTarget:4.3, gadsTarget:5.6, action:'increase', newBudget:115 },
   'Search | BRAND | Zest Lighting | Protection':        { margin:null, breakeven:null, recTarget:4.6, gadsTarget:4.6, action:'hold',     newBudget:null },
-  'PMax | NON-ZEST | Secondary Categories | Coverage':  { margin:.35,  breakeven:2.86, recTarget:6.2, gadsTarget:6.2, action:'hold',     newBudget:null },
+  'PMax | NON-ZEST | Secondary Categories | Coverage':  { margin:.35,  breakeven:2.86, recTarget:4.3, gadsTarget:6.2, action:'hold',     newBudget:null },
   'Search | NON-BRAND | Generic':                       { margin:null, breakeven:null, recTarget:6.0, gadsTarget:6.0, action:'fix',      newBudget:null },
 };
 
@@ -495,7 +495,8 @@ function showSection(name, btn) {
   document.getElementById('section-'+name).classList.add('active');
   btn.classList.add('active');
   const titles = { overview:'Overview', campaigns:'All Campaigns', targets:'ROAS Targets', checklist:'Action Checklist' };
-  const subs = { overview:'Performance summary · Live data', campaigns:'Detailed campaign metrics · Active only', targets:'Scoreboard, contribution analysis & budget plan', checklist:'Dynamic tasks based on live performance' };
+  const dateLabel = document.getElementById('dateRange').options[document.getElementById('dateRange').selectedIndex].text;
+  const subs = { overview:`Performance summary · ${dateLabel}`, campaigns:`Detailed campaign metrics · ${dateLabel}`, targets:'Scoreboard, contribution analysis & budget plan', checklist:'Dynamic tasks based on live performance' };
   document.getElementById('pageTitle').textContent = titles[name];
   document.getElementById('pageSubtitle').textContent = subs[name];
   if (name === 'checklist' && campaignData.length) renderChecklist();
@@ -574,6 +575,8 @@ function renderAlerts() {
 
     if (roas > 0 && cfg?.breakeven && roas < cfg.breakeven) {
       alerts.push({ type:'red', icon:'🚨', msg:`<strong>${name}</strong> is below break-even ROAS (${roas}× vs ${cfg.breakeven}× break-even). Currently unprofitable — fix before increasing spend.` });
+    } else if (cfg?.action === 'fix' && roas > 0 && cfg?.recTarget && roas < cfg.recTarget) {
+      alerts.push({ type:'red', icon:'🚨', msg:`<strong>${name}</strong> ROAS at ${roas}× is well below target ${cfg.recTarget}×. Campaign needs fixing — review keywords and bidding.` });
     } else if (roas > 0 && cfg?.recTarget && roas < cfg.recTarget * 0.8) {
       alerts.push({ type:'amber', icon:'⚠️', msg:`<strong>${name}</strong> ROAS at ${roas}× is significantly below recommended target of ${cfg.recTarget}×. Monitor closely.` });
     }
@@ -709,7 +712,8 @@ function renderCampaignTable() {
     const cfg = getConfig(r['Campaign']);
     const roasClass = roas>=3?'val-green':roas>=1.67?'val-amber':roas>0?'val-red':'val-muted';
     const ctrRaw = toNum(r['CTR']);
-    const ctr = ctrRaw>0 ? (ctrRaw<=1?ctrRaw*100:ctrRaw).toFixed(2)+'%' : '—';
+    // CTR comes as "1.23%" from sheet — toNum strips % leaving 1.23 (already a percentage)
+    const ctr = ctrRaw>0 ? ctrRaw.toFixed(2)+'%' : '—';
     const isVal = r['Impr. Share'];
     const isNum = toNum(isVal);
     return `<tr>
@@ -883,7 +887,8 @@ function renderBudgetTable() {
     const budget = toNum(r['Budget']);
     const max20 = (budget*1.2).toFixed(0);
     let actionHtml, reason;
-    if (cfg.action==='increase') { actionHtml=`<span class="action-badge action-up">↑ $${cfg.newBudget}/day</span>`; reason='Budget-limited & above break-even'; }
+    const suggested = Math.ceil((budget * 1.2) / 5) * 5; // round up to nearest $5
+    if (cfg.action==='increase') { actionHtml=`<span class="action-badge action-up">↑ $${suggested}/day</span>`; reason='Budget-limited & above break-even'; }
     else if (cfg.action==='hold') { actionHtml=`<span class="action-badge action-hold">⏸ Hold</span>`; reason='Not budget-limited — no change needed'; }
     else { actionHtml=`<span class="action-badge action-fix">🔧 Fix first</span>`; reason='ROAS below break-even — fix before spending more'; }
     return `<tr>
@@ -917,19 +922,31 @@ function generateDynamicTasks() {
         id: `auto_increase_${r['Campaign']}`,
         group: '⚡ Budget Actions',
         text: `Increase ${name} budget by 20%`,
-        note: `$${budget}/day → $${(budget*1.2).toFixed(0)}/day. ROAS ${roas}× is above break-even ${cfg.breakeven}×. Max 20% at a time.`,
+        note: `$${budget.toFixed(0)}/day → $${Math.ceil(budget*1.2/5)*5}/day (rounded to nearest $5). ROAS ${roas}× is above break-even ${cfg.breakeven}×. Max 20% at a time.`,
         auto: true,
         priority: 1
       });
     }
 
-    // Lower target ROAS if above rec target
+    // Lower target ROAS if actual ROAS significantly exceeds current GAds target
     if (cfg.gadsTarget > cfg.recTarget && roas >= cfg.recTarget) {
       tasks.push({
         id: `auto_lower_target_${r['Campaign']}`,
         group: '⚡ Budget Actions',
         text: `Lower ${name} target ROAS from ${(cfg.gadsTarget*100).toFixed(0)}% → ${(cfg.recTarget*100).toFixed(0)}%`,
         note: `Actual ROAS ${roas}× is above rec. target ${cfg.recTarget}×. Lowering target unlocks more auction volume while staying profitable.`,
+        auto: true,
+        priority: 2
+      });
+    }
+
+    // Also flag if actual ROAS beats current GAds target by >20% even with no rec target change
+    if (roas > 0 && cfg.gadsTarget && roas > cfg.gadsTarget * 1.2 && cfg.gadsTarget <= cfg.recTarget) {
+      tasks.push({
+        id: `auto_beating_target_${r['Campaign']}`,
+        group: '⚡ Budget Actions',
+        text: `${name} is beating target ROAS by >20% — consider lowering target to capture more volume`,
+        note: `Actual ROAS ${roas}× vs target ${cfg.gadsTarget}×. Campaign is over-delivering. Reducing target gives Google more room to find volume while staying well above break-even (${cfg.breakeven}×).`,
         auto: true,
         priority: 2
       });
